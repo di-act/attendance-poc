@@ -11,6 +11,26 @@ from openpyxl.chart import BarChart, Reference
 from openpyxl.styles import Font, Alignment, PatternFill, Border, Side
 from openpyxl.utils import get_column_letter
 
+class S3Uploader:
+    """Upload files to AWS S3 bucket."""
+    
+    def __init__(self, bucket_name: str):
+        import boto3
+        self.s3_client = boto3.client(
+            "s3",
+            region_name=AWS_REGION
+        )
+        self.bucket_name = bucket_name
+    
+    def upload_file(self, file_path: str, s3_key: str) -> None:
+        """Upload a file to S3."""
+        try:
+            self.s3_client.upload_file(file_path, self.bucket_name, s3_key)
+            print(f"✓ Uploaded {file_path} to s3://{self.bucket_name}/{s3_key}")
+        except Exception as e:
+            print(f"Error uploading {file_path} to S3: {e}")
+            raise
+
 class DataFrameMergeWithVariance:
     """Merge DataFrames with variance calculation and XLSX export."""
     
@@ -401,8 +421,17 @@ OUTPUT_FILE = os.getenv("OUTPUT_FILE")
 INVOICE_FILE = os.getenv("INVOICE_FILE")
 ATTENDANCE_FILE = os.getenv("ATTENDANCE_FILE")
 
+
+# Configuration
+S3_BUCKET = "bhp-poc-bucket"
+AWS_REGION = "ap-southeast-2" 
+S3_ARN="arn:aws:s3:::bhp-poc-bucket"
+S3_URI="arn:aws:s3:ap-southeast-2:562078167090:accesspoint/bhp-results"
 # get current root directory
 ROOT_DIR = Path(__file__).resolve().parent
+
+
+
 
 # Logging
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -507,6 +536,25 @@ def main():
         # endregion
         
         print("✓ Data extraction and processing completed successfully.")
+        
+        # Initialize uploader
+        try:
+            uploader = S3Uploader(S3_URI)
+        except Exception as e:
+            print(f"\n✗ Failed to initialize S3 client: {e}")
+            return False
+        
+        # Upload file
+        upload_file_path = f"{file_prefix}\\result.xlsx"
+        success = uploader.upload_file(
+            file_path=upload_file_path,
+            s3_key="result.xlsx"
+        )
+        
+        if not success:
+            return False
+    
+        print(f"✓ Uploaded to s3 bucket -> {S3_BUCKET}/result.xlsx successfully.")
         # output_file = f"{ROOT_DIR}\\output\\output_{timestamp}.json"
         # with open(output_file, "w") as f:
         #     json.dump(daily_attendance_summary, f, indent=4)
