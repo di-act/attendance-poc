@@ -404,6 +404,15 @@ ATTENDANCE_FILE = os.getenv("ATTENDANCE_FILE")
 # get current root directory
 ROOT_DIR = Path(__file__).resolve().parent
 
+# Logging
+basedir = os.path.abspath(os.path.dirname(__file__))
+log_dir = os.path.join(basedir, "logs")
+os.makedirs(log_dir, exist_ok=True)
+
+accesslog = os.path.join(log_dir, "access.log")
+errorlog = os.path.join(log_dir, "error.log")
+loglevel = "info"
+
 def main():
     # region:: process prompt (Parse command line arguments)
     parser = argparse.ArgumentParser(
@@ -444,7 +453,7 @@ def main():
         if file_type != '.docx':
             raise ValueError("Only DOCX files are supported.")
         else:
-            file_path = os.path.join(ROOT_DIR, "input", args.invoice)  
+            file_path = os.path.join(ROOT_DIR, "input", args.invoice)
             agreement_ref = extract_agreement_data(file_path) # TASK-1
 
         # Extract CSV attendance file
