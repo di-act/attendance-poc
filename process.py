@@ -424,7 +424,7 @@ def extract_attendance_data(csv_filepath: str) -> Dict[str, Any]:
 
     return grouped
 
-# Finally:: compare two data sets and generate summary with attendance records and flag the record to review
+# region: Finally:: compare two data sets and generate summary with attendance records and flag the record to review
 
 
 # define set of static variables read from command line and environment .env file
@@ -449,6 +449,7 @@ os.makedirs(log_dir, exist_ok=True)
 accesslog = os.path.join(log_dir, "access.log")
 errorlog = os.path.join(log_dir, "error.log")
 loglevel = "info"
+# endregion
 
 def main():
     # region:: process prompt (Parse command line arguments)
@@ -563,7 +564,7 @@ def main():
         if not success:
             return False
     
-        print(f"✓ Uploaded to s3 bucket -> https://{S3_BUCKET}s3.ap-southeast-2.amazonaws.com/result.xlsx successfully.")
+        print(f"✓ Uploaded to s3 bucket -> https://bhp-poc-bucket.s3.ap-southeast-2.amazonaws.com/result.xlsx successfully.")
         # output_file = f"{ROOT_DIR}\\output\\output_{timestamp}.json"
         # with open(output_file, "w") as f:
         #     json.dump(daily_attendance_summary, f, indent=4)
