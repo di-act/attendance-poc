@@ -562,7 +562,7 @@ def main():
         if not success:
             return False
     
-        print(f"✓ Uploaded to s3 bucket -> {S3_BUCKET}/result.xlsx successfully.")
+        print(f"✓ Uploaded to s3 bucket -> https://{S3_BUCKET}s3.ap-southeast-2.amazonaws.com/result.xlsx successfully.")
         # output_file = f"{ROOT_DIR}\\output\\output_{timestamp}.json"
         # with open(output_file, "w") as f:
         #     json.dump(daily_attendance_summary, f, indent=4)
