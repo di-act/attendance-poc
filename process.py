@@ -517,7 +517,8 @@ def main():
         # # Optionally save to JSON file with time suffix to avoid overwriting
         timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
         file_prefix = os.path.join(ROOT_DIR, "output")
-        
+        if not os.path.exists(file_prefix):
+            os.makedirs(file_prefix)
         # # Save the generated DataFrame to an Excel file
         # agreement_grouped.to_excel(f"{file_prefix}\\tmp_agreement_grouped.xlsx", index=False)
         
