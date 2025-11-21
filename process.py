@@ -12,8 +12,9 @@ from openpyxl.styles import Font, Alignment, PatternFill, Border, Side
 from openpyxl.utils import get_column_letter
 
 # Configuration
-AWS_ACCESS_KEY_ID="ASIAYFXTYGAZPOPHVJMZ"
-AWS_SECRET_ACCESS_KEY="ijv9XY1juzT1ehPj3sImH6iFTzmiC27hx6zEfH/i"
+AWS_ACCESS_KEY_ID="ASIAYFXTYGAZKVG4SKRP"
+AWS_SECRET_ACCESS_KEY="nQdWlBEkq+5L+J9yqOeFfblbFWssz2RqJUlHPxlJ"
+AWS_SESSION_TOKEN="IQoJb3JpZ2luX2VjEDkaDmFwLXNvdXRoZWFzdC0yIkcwRQIhANUCWTRFWfjRa11dTQGqbaovPewB04Xpjg4KP/L7ttu/AiACQrg5bAu60PNnRV8jYCa5aSaNhHxoX/MV6MrOeDdrICr5AggCEAAaDDU2MjA3ODE2NzA5MCIMtkSDb8gWx6/zwf56KtYCLiBG4nL7DP3CfBkF7lEZNM4k+V4c42iuaSa5ivx805JU2xDkX1/20JrPVEvDngKTKMLoND7c0JMoAzUVaYyn1FaMtR/XlwXYd9skaWjUsvFDGzw8qqh0I7QJkzHRIZScHIFI9a6qmcaX8bysuKIpPclue4uUAj9VcX4wUP0OTYjy2SJa0JaeeEh6HbTqKi6WOHqTxX1cQyiu6A+ruDkXjZ9LhJ1bflCjlxumvVZpTIN26nW83WiTzMTB59jTYbCtZ/vlDjfxJPl5LZsdyY3RA5jbzWjX8OTxWpYQC8EdDbjFJlvc2nYw5jLzj8Mf49Tta0EJ0HRuUntzMGfTczzwAVD35L7Uj8kQsLVkNUlw8HyaoXFMFnanG/LByJax2qSgkugjni6Awd8B/NFpBnkzguIUOgPeBwEav0gMUJBeTBFE5Gznl7RWKaKaYclw7/mosE44PxFVMIjz/sgGOqUBvIsJ3m0fnv0iIEaDFtF9rpDniHZNdmOa6m/EHZNQY4K6NnhnX/HmIFPgKRlIHAUrG85y5cJOYSKIc+g9XWlDlVmvgojNLPsZSVZPo3eAq8XDFKKM6GDS5Af66AwBRZUT79J9SIlBDYauP7QgD3Oy1GokBpbkIAhaUQmNh2n32aKI5ZSwV/4uZuVUQZ4lNIEQc/BfzR5oGGErfMugwir7q6yeFbOq"
 S3_BUCKET = "bhp-poc-bucket"
 AWS_REGION = "ap-southeast-2" 
 S3_ARN="arn:aws:s3:::bhp-poc-bucket"
@@ -28,6 +29,7 @@ class S3Uploader:
             "s3",
             aws_access_key_id=AWS_ACCESS_KEY_ID,
             aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+            aws_session_token=AWS_SESSION_TOKEN,
             region_name=AWS_REGION
         )
         self.bucket_name = bucket_name
