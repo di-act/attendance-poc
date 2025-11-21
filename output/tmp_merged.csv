@@ -1,0 +1,12 @@
+,uid,attendanceDate,totalHoursWorked,servicesPerformed,totalSystemHours,allServicesPerformed,variance_hours,abs_variance_hours,variance_pct
+0,88888888,,0.0,electrical,10,electrical,10.0,10.0,inf
+1,88888888,2025-01-11,8.116666666666667,"electrical, engineering",8,"electrical, engineering",-0.11666666666666714,0.11666666666666714,-1.44
+2,88888888,,0.0,"electrical, engineering, plumbing",7,"electrical, engineering, plumbing",7.0,7.0,inf
+3,88888888,2025-02-11,10.566666666666666,plumbing,10,plumbing,-0.5666666666666664,0.5666666666666664,-5.36
+4,88895685,2025-01-11,4.983333333333333,electrical,3,electrical,-1.9833333333333334,1.9833333333333334,-39.8
+5,88895685,2025-02-11,9.433333333333334,"electrical, engineering, plumbing",6,"electrical, engineering, plumbing",-3.4333333333333336,3.4333333333333336,-36.4
+6,88895685,,0.0,plumbing,4,plumbing,4.0,4.0,inf
+7,88895688,2025-01-11,10.716666666666667,"electrical, engineering",6,"electrical, engineering",-4.716666666666667,4.716666666666667,-44.01
+8,88895688,,0.0,"electrical, engineering, plumbing",3,"electrical, engineering, plumbing",3.0,3.0,inf
+9,88895688,,0.0,engineering,6,engineering,6.0,6.0,inf
+10,88895688,2025-02-11,9.566666666666666,plumbing,8,plumbing,-1.5666666666666664,1.5666666666666664,-16.38

@@ -11,6 +11,14 @@ from openpyxl.chart import BarChart, Reference
 from openpyxl.styles import Font, Alignment, PatternFill, Border, Side
 from openpyxl.utils import get_column_letter
 
+# Configuration
+AWS_ACCESS_KEY_ID="ASIAYFXTYGAZPOPHVJMZ"
+AWS_SECRET_ACCESS_KEY="ijv9XY1juzT1ehPj3sImH6iFTzmiC27hx6zEfH/i"
+S3_BUCKET = "bhp-poc-bucket"
+AWS_REGION = "ap-southeast-2" 
+S3_ARN="arn:aws:s3:::bhp-poc-bucket"
+S3_URI="arn:aws:s3:ap-southeast-2:562078167090:accesspoint/bhp-results"
+
 class S3Uploader:
     """Upload files to AWS S3 bucket."""
     
@@ -18,6 +26,8 @@ class S3Uploader:
         import boto3
         self.s3_client = boto3.client(
             "s3",
+            aws_access_key_id=AWS_ACCESS_KEY_ID,
+            aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
             region_name=AWS_REGION
         )
         self.bucket_name = bucket_name
@@ -422,11 +432,7 @@ INVOICE_FILE = os.getenv("INVOICE_FILE")
 ATTENDANCE_FILE = os.getenv("ATTENDANCE_FILE")
 
 
-# Configuration
-S3_BUCKET = "bhp-poc-bucket"
-AWS_REGION = "ap-southeast-2" 
-S3_ARN="arn:aws:s3:::bhp-poc-bucket"
-S3_URI="arn:aws:s3:ap-southeast-2:562078167090:accesspoint/bhp-results"
+
 # get current root directory
 ROOT_DIR = Path(__file__).resolve().parent
 
