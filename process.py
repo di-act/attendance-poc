@@ -194,7 +194,7 @@ class DataFrameMergeWithVariance:
                             startrow=2, index=False)
             
             # Sheet 3: Merged data
-            self.merged_df.to_excel(writer, sheet_name='Merged', 
+            self.merged_df.to_excel(writer, sheet_name='Calculation', 
                                    startrow=2, index=False)
             
             # Sheet 4: Variance summary
@@ -209,8 +209,8 @@ class DataFrameMergeWithVariance:
         wb[self.df1_name].sheet_properties.tabColor = 'F2AA84' # Dark Brown
         self._format_sheet(wb[self.df2_name], self.df2_name, len(self.df2.columns))
         wb[self.df2_name].sheet_properties.tabColor = '538DD5' # Dark Blue
-        self._format_sheet(wb['Merged'], 'Merged Data', len(self.merged_df.columns))
-        wb['Merged'].sheet_properties.tabColor = 'CCC0DA' # Dark Blue
+        self._format_sheet(wb['Calculation'], 'Calculated Data', len(self.merged_df.columns))
+        wb['Calculation'].sheet_properties.tabColor = 'CCC0DA' # Dark Blue
         
         
         if self.variance_df is not None:
