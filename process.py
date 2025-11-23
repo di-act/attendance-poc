@@ -12,9 +12,9 @@ from openpyxl.styles import Font, Alignment, PatternFill, Border, Side
 from openpyxl.utils import get_column_letter
 
 # Configuration
-AWS_ACCESS_KEY_ID="ASIAYFXTYGAZLZEU4FAW"
-AWS_SECRET_ACCESS_KEY="zJyoFZsqCyJ3aoPbzLMvEOBluR+DyC8kqr5uYYFs"
-AWS_SESSION_TOKEN="IQoJb3JpZ2luX2VjED0aDmFwLXNvdXRoZWFzdC0yIkYwRAIgJ+/dm5fLcg0pLXocLLYXhnArEuZnorHCm0nWCewpR10CIAsJBqeUc75jgByBbz1vz+MpbfeQn9GzPHXKZ/UUvviUKvkCCAYQABoMNTYyMDc4MTY3MDkwIgyiLFJXWzK0J83Rj+Qq1gLkx7PyGqZ2Zq0kLT7miV/zL3h2TjZGsaDzH8PA+R/ezMt8AfTkOhn1eZpBNf8HNRVHNvF41ApwOYB5BgznljMsYcplSVt+anmL+GI7Ls2P8wpip179ZwxBA09bOu79jSd6BbnB5hTm51Yg4rbLr8Ga2/X3VxkA3MiKsUEKErfORDG4RbU9qryRlxp7mgIdAdrG28nBShMhXJPL1v6BeCbRzeYD2hjKi5cQJ1J+IgsqcUJ0SiR0RKiS+/56kzhfmoEfIGuBwjTqn5973udyBfLXObfjFss0zVBkUYUAZL0fg2UhMUh0YRwBDCQNKviiCq1EzsPJ0poaCKwII5hRqAW6yPmHpbL/Sk7aNyozW73dAcJfd7Jq5NAI6Fiu2bQLAu3a87Td6XC6LWznSmwPW6fp6VThTuq4x6D3A+If9WTyOV6pHD5SRqJQYm3SLTs/Qbr8NPCqbCYwsNr/yAY6pgEMV50ZODRlVCXXRh0CSQGgm+pDISEPtP3dlLqcl8m3dboGBOv+k4osMzjB8zcQKntmMSzkx2s5B9L6NmvzlwzgxNpr19HnzR2PQFS79QImRVF5QU4rhYSHL1pFFTX2+FhVAY/9T5N5VVK2Ly7BjIv1DftFoSQurxqbZjcUOL16CEHPCWp/JfBcNPXRVprW0x2oKEMB1g+b2IjkOyEhyyg11JYRgsz2"
+AWS_ACCESS_KEY_ID="ASIAYFXTYGAZFO6FPKGD"
+AWS_SECRET_ACCESS_KEY="tzCigiitWKVIz/9juiZ7qsUKwYCt3vmM/a4+2l3N"
+AWS_SESSION_TOKEN="IQoJb3JpZ2luX2VjEH4aDmFwLXNvdXRoZWFzdC0yIkcwRQIgayS99NreF/NsYd3jpx/d6ofm3fD128qyIFx8OahBtecCIQCshAnCpFT+o6I1MPaTDzy9VRijr8kxDL2m6SPxZd6wHCr5AghHEAAaDDU2MjA3ODE2NzA5MCIM1VQD98F3EeA07JQ6KtYC0GIaxoPbVxUsxgpi5OSHdOGgecAGxtGkjfL1W8VQEFrlR1RyNoNdWTwXUky+x0secMk8DSFIUG+duYVXWt/mnHV3UWmE2U7LQUtLScdafkeXPOnKxRxO8lTdsJaHjrTtrJYmjgPy4UNjitW+aS5UR3p5bs+0C9PeWTa+AP8YN/Yx/jYqjCN9q1xHFfNJCYjGcBgX4qqfHMvvsX2yrUYbsJh7uQqaR+XDaQoW0bwJUHgWZ4p+/Y9flYwmYsMF/XlD88UV5mhD39tZllIJ0XE/eWoxgXJi/sevrhL7JSVrPyMwkW5KQ3HwcZG+YxzoWZe3l8jb9tTzTgZthsMMJHbtuMRCjXqVM1gt61aCi5JSR6YR2qjzKArXS9+eSv1Q2P1ZvElphsj0vdhi3pXJf/LX2YkxHePxStKqdZaH2+UGcy8l57OB1SWIcIIeYty/DZUu+YGd/+IaMO2NjskGOqUBr3A0BfPwYctphHl+GM4d2iBJ1JGfzaSMJR3Pe7HgSTzOcCh7lPHHIDOzYq+tvRH9ZgKKuxKZIXSHfYOgXlSSi6TBcheibNwtz2SQSXziksY/v7Xqtrsrq3t0TJYzBz00sKiBU/eRfVjMgyVGx2J7ThIRtztdyWurz53GBCHYBoVBdr8t/B4DazuDezg4qlqkGknuSEvSVFvVLYDdjGhrgolhsBqt"
 S3_BUCKET = "bhp-poc-bucket"
 AWS_REGION = "ap-southeast-2" 
 S3_ARN="arn:aws:s3:::bhp-poc-bucket"
@@ -135,7 +135,7 @@ class DataFrameMergeWithVariance:
                 (variance / actual) * 100.0
             )
         
-        self.merged_df[pct_col] = np.round(pct, 2)
+        self.merged_df[pct_col] = np.abs(np.round(pct, 2))
         
         print(f"✓ Calculated variance and percentages")
         return self.merged_df
@@ -205,12 +205,44 @@ class DataFrameMergeWithVariance:
         wb = openpyxl.load_workbook(output_file)
         
         self._format_sheet(wb[self.df1_name], self.df1_name, len(self.df1.columns))
+        wb[self.df1_name].sheet_properties.tabColor = 'F2AA84' # Dark Brown
         self._format_sheet(wb[self.df2_name], self.df2_name, len(self.df2.columns))
+        wb[self.df2_name].sheet_properties.tabColor = '538DD5' # Dark Blue
         self._format_sheet(wb['Merged'], 'Merged Data', len(self.merged_df.columns))
+        wb['Merged'].sheet_properties.tabColor = 'CCC0DA' # Dark Blue
+        
         
         if self.variance_df is not None:
             self._format_sheet(wb['Comparison'], 'Variance Analysis', 
                              len(self.variance_df.columns))
+        # format Comparison sheet
+        comp_worksheet = wb['Comparison']
+        fill = PatternFill(start_color="538DD5", end_color="538DD5", 
+                              fill_type="solid")
+        cell = comp_worksheet.cell(row=2, column=5)
+        cell.fill = fill
+        # delete variance_hours column
+        variance_col_idx = 6
+        comp_worksheet.delete_cols(variance_col_idx)
+        purple_fill = PatternFill(start_color="CCC0DA", end_color="CCC0DA", 
+                              fill_type="solid")
+        for col in range(6, 10):
+            cell = comp_worksheet.cell(row=2, column=col)
+            cell.fill = purple_fill
+        comp_worksheet.merge_cells('A1:I1')
+        comp_worksheet.delete_cols(10)
+        
+        # renaming columns
+        comp_worksheet.cell(row=3, column=1).value = "UID"
+        comp_worksheet.cell(row=3, column=2).value = "Services Performed"
+        comp_worksheet.cell(row=3, column=3).value = "Service Date"
+        comp_worksheet.cell(row=3, column=4).value = "Invoice Hours"
+        comp_worksheet.cell(row=3, column=5).value = "System Hours"
+        comp_worksheet.cell(row=3, column=6).value = "Variance (Hours)"
+        comp_worksheet.cell(row=3, column=7).value = "Variance (Percentage)"
+        comp_worksheet.cell(row=3, column=8).value = "Mismatch Hours"
+        comp_worksheet.cell(row=3, column=9).value = "Policy Conflict"
+        comp_worksheet.column_dimensions['B'].width = 50
         # Activate dashboard sheet
         wb.active = wb.sheetnames.index("Comparison")
         wb.save(output_file)
@@ -225,7 +257,10 @@ class DataFrameMergeWithVariance:
     def _format_sheet(self, worksheet, header_name: str, num_cols: int) -> None:
         """Format worksheet with merged headers and styling."""
         # Merge cells for main header
-        worksheet.merge_cells(f'A1:{get_column_letter(num_cols)}1')
+        if header_name == 'Variance Analysis':
+            worksheet.merge_cells(f'A1:I1')
+        else:
+            worksheet.merge_cells(f'A1:{get_column_letter(num_cols)}1')
         header_cell = worksheet['A1']
         header_cell.value = header_name
         
@@ -253,7 +288,7 @@ class DataFrameMergeWithVariance:
         
         # Auto-adjust column widths
         for col in range(1, num_cols + 1):
-            worksheet.column_dimensions[get_column_letter(col)].width = 18
+            worksheet.column_dimensions[get_column_letter(col)].width = 20
         
         # Add borders
         thin_border = Border(
@@ -532,17 +567,19 @@ def main():
                                            agreement_grouped, "SES-Invoice",                          # df2
                                            ['uid', 'servicesPerformed'])                              # key columns
         merger.merge_dataframes()
+        file = os.path.join(file_prefix, "tmp_merged.csv")
         # test::
-        # merger.merged_df.to_csv(f"{file_prefix}\\tmp_merged.csv")
+        # merger.merged_df.to_csv(file)
         merger.calculate_variance("totalHoursWorked", "totalSystemHours")
         # test::
-        merger.merged_df.to_csv(f"{file_prefix}\\tmp_merged.csv")
+        merger.merged_df.to_csv(file)
         
         merger.get_variance_summary()
         # test::
-        merger.variance_df.to_csv(f"{file_prefix}\\tmp_comparison.csv")
-        
-        merger.export_to_xlsx(f"{file_prefix}\\result.xlsx", "totalHoursWorked", "totalSystemHours")
+        file = os.path.join(file_prefix, "tmp_comparison.csv")
+        merger.variance_df.to_csv(file)
+        file = os.path.join(file_prefix, "result.xlsx")
+        merger.export_to_xlsx(file, "totalHoursWorked", "totalSystemHours")
         # endregion
         
         print("✓ Data extraction and processing completed successfully.")
@@ -555,7 +592,7 @@ def main():
             return False
         
         # Upload file
-        upload_file_path = f"{file_prefix}\\result.xlsx"
+        upload_file_path = file
         success = uploader.upload_file(
             file_path=upload_file_path,
             s3_key="result.xlsx"
