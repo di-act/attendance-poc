@@ -8,6 +8,9 @@ from openpyxl.styles import Font, PatternFill, Alignment
 from datetime import datetime
 import io
 
+import DataFrameMergeWithVariance as dmv
+from process import extract_agreement_data, extract_attendance_data
+
 app = Flask(__name__)
 
 # Configuration
@@ -196,18 +199,42 @@ def upload_files():
         docx_path = os.path.join(app.config['UPLOAD_FOLDER'], docx_filename)
         csv_path = os.path.join(app.config['UPLOAD_FOLDER'], csv_filename)
         
+        # need to save the uploaded files to disk for processing
         docx_file.save(docx_path)
         csv_file.save(csv_path)
         
         # Process files
-        docx_content = extract_text_from_docx(docx_path)
-        csv_df = read_csv_data(csv_path)
+        #docx_content = extract_text_from_docx(docx_path)
+        #csv_df = read_csv_data(csv_path)
+        agreement_ref = extract_agreement_data(docx_path) # TASK-1
+        daily_attendance_summary_df = extract_attendance_data(csv_path) # TASK-2
+        
+        # Task-3:: Convert agreement records to DataFrame for comparison
+        agreement_ref_df = pd.DataFrame(agreement_ref['records'])
+
+        # Group agreement data by uid and servicesPerformed to get max allowed hours and remove duplicates
+        agreement_grouped = agreement_ref_df.groupby(['uid', 'servicesPerformed']).agg(
+            totalSystemHours = ('systemHours', 'sum'), # assuming systemHours in agreement is the max allowed
+            allServicesPerformed = ('servicesPerformed', lambda x: ', '.join(x.unique()))
+        ).reset_index()
+        
+        # Create merger and process (AS GENERIC CLASS DEFINED IN data_merge_with_variance.py NOTE: parameter, variables are hardcoded for now)
+        merger = dmv.DataFrameMergeWithVariance(daily_attendance_summary_df, "Time & Attendance Summary", # df1
+                                           agreement_grouped, "SES-Invoice",                          # df2
+                                           ['uid', 'servicesPerformed'])                              # key columns
+        merger.merge_dataframes()
+        # merger.merged_df.to_csv(file)
+        merger.calculate_variance("totalHoursWorked", "totalSystemHours")
+        merger.get_variance_summary()
         
         # Generate XLSX
-        output_filename = f"output_{timestamp}.xlsx"
+        #output_filename = f"output_{timestamp}.xlsx"
+        output_filename = f"result.xlsx"
         output_path = os.path.join(app.config['OUTPUT_FOLDER'], output_filename)
         
-        generate_xlsx(docx_content, csv_df, output_path)
+        merger.export_to_xlsx(output_path, "totalHoursWorked", "totalSystemHours")
+        
+        #generate_xlsx(docx_content, csv_df, output_path)
         
         # Clean up uploaded files (optional)
         os.remove(docx_path)

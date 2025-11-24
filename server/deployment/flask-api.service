@@ -1,0 +1,16 @@
+[Unit]
+Description=Flask File Upload API
+After=network.target
+
+[Service]
+User=ubuntu
+Group=www-data
+WorkingDirectory=/home/ubuntu/file-upload-api
+Environment="PATH=/home/ubuntu/file-upload-api/venv/bin"
+EnvironmentFile=/home/ubuntu/file-upload-api/.env
+ExecStart=/home/ubuntu/file-upload-api/venv/bin/gunicorn --workers 4 --bind 127.0.0.1:5000 --timeout 120 wsgi:app
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
